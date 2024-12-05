@@ -47,3 +47,60 @@ class Hero {
   }
 }
 
+// Sous-classes pour les types de héros
+class Guerrier extends Hero {
+  constructor(nom, attaque, vie, posture) {
+      super(nom, attaque, vie, posture);
+      this.rage = 0;
+  }
+
+  attaquer(boss) {
+      let degats = super.attaquer(boss);
+      this.rage++;
+      if (this.rage >= 4) {
+          degats *= 1.25;
+          boss.vie -= degats - this.attaque;
+          this.rage = 0;
+          console.log(`${this.nom} utilise sa rage et inflige des dégâts bonus.`);
+      }
+      return degats;
+  }
+}
+
+class Mage extends Hero {
+  constructor(nom, attaque, vie, posture) {
+      super(nom, attaque, vie, posture);
+      this.mana = 7;
+  }
+
+  attaquer(boss) {
+      if (this.mana < 2) {
+          console.log(`${this.nom} récupère 7 points de mana.`);
+          this.mana = 7;
+          return 0;
+      }
+
+      this.mana -= 2;
+      return super.attaquer(boss);
+  }
+}
+
+class Archer extends Hero {
+  constructor(nom, attaque, vie, posture) {
+      super(nom, attaque, vie, posture);
+      this.fleches = 6;
+  }
+
+  attaquer(boss) {
+      if (this.fleches < 2) {
+          console.log(`${this.nom} récupère 6 flèches.`);
+          this.fleches = 6;
+          return 0;
+      }
+
+      this.fleches -= 2;
+      return super.attaquer(boss);
+  }
+}
+
+
