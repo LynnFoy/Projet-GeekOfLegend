@@ -77,7 +77,12 @@ class Hero {
 
   changerPosture() {
       const nouvellePosture = prompt(`Posture pour ${this.nom} (attaque/défense) ?`).toLowerCase();
-      this.posture = nouvellePosture === "défense" ? "défense" : "attaque";
+      if (nouvellePosture === "défense" || nouvellePosture === "attaque") {
+          this.posture = nouvellePosture;
+          alert(`${this.nom} change de posture en ${this.posture}.`);
+      } else {
+          alert("Posture invalide. Le héros reste en attaque.");
+      }
   }
 }
 
@@ -190,7 +195,7 @@ function jouer() {
   console.log(`Le boss est ${boss.nom} avec ${boss.vie} points de vie !`);
 
   while (heros.some(h => h.estEnVie()) && boss.estEnVie()) {
-//Tour des héros
+  //Tour des héros
       for (const hero of heros) {
           if (hero.estEnVie()) hero.attaquer(boss);
       }
@@ -235,12 +240,13 @@ function jouer() {
       }
   }
 
-// Si les héros sont morts
-  console.log("Tous les héros sont morts. Vous avez perdu !");
+//Si les héros sont morts
+console.log("Tous les héros sont morts. Vous avez perdu !");
+
 //Afficher un message de défaite
   alert("Tous les héros sont morts. Vous avez perdu !");
 }
 
-// Lancer le jeu
+//Lancer le jeu
 jouer();
 
