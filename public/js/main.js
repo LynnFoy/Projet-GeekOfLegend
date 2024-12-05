@@ -155,4 +155,31 @@ function repartirPoints(pointsVieTotal, pointsAttaqueTotal) {
   };
 }
 
+//Fonction pour créer les héros
+function creerHeros() {
+  const pointsVieTotal = 150;
+  const pointsAttaqueTotal = 120;
+
+  console.log("Vous devez répartir les points de vie et d'attaque entre les trois héros.");
+  const assignerPoints = repartirPoints(pointsVieTotal, pointsAttaqueTotal);
+
+  const heros = [
+      { type: Guerrier, role: "Guerrier" },
+      { type: Mage, role: "Mage" },
+      { type: Archer, role: "Archer" }
+  ].map(({ type, role }) => {
+      const nom = prompt(`Choisissez un nom pour le ${role}:`);
+      return assignerPoints(nom, type);
+  });
+
+  return heros;
+}
+
+//Création des Boss
+const bossList = [
+  new Boss("Sauron", 25, 200),
+  new Boss("Chronos", 20, 180),
+  new Boss("Lilith", 30, 150),
+];
+
 
