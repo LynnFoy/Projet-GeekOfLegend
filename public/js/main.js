@@ -182,4 +182,38 @@ const bossList = [
   new Boss("Lilith", 30, 150),
 ];
 
+//Jeu principal
+function jouer() {
+  const heros = creerHeros();
+  const boss = bossList[Math.floor(Math.random() * bossList.length)];
+
+  console.log(`Le boss est ${boss.nom} avec ${boss.vie} points de vie !`);
+
+  while (heros.some(h => h.estEnVie()) && boss.estEnVie()) {
+//Tour des héros
+      for (const hero of heros) {
+          if (hero.estEnVie()) hero.attaquer(boss);
+      }
+
+      if (boss.vie <= 0) {
+          console.log(`Vous avez vaincu ${boss.nom} ! Félicitations !`);
+//Afficher un message de victoire
+          alert(`Vous avez vaincu ${boss.nom} ! Félicitations !`);
+//Gagner de l'expérience
+          heros.forEach(hero => console.log(`${hero.nom} a gagné 10 points d'expérience.`));
+          return;
+      }
+
+//Boss pose une énigme si ses points de vie sont en dessous de 20%
+      if (boss.vie <= boss.vieMax * 0.2) {
+          console.log(`${boss.nom} est affaibli ! Il pose une énigme.`);
+          const victoire = boss.poserEnigme();
+          if (!victoire) {
+//Tous les héros meurent si l'énigme est ratée
+              console.log("Tous les héros sont morts. Vous avez perdu !");
+//Afficher un message de défaite
+              alert("Tous les héros sont morts. Vous avez perdu !");
+              return;
+          }
+      }
 
