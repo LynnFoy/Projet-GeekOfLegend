@@ -175,3 +175,11 @@ function creerHeros() {
   return heros;
 }
 
+// Création des Boss
+const bossList = [
+  new Boss("Sauron", 25, 200),
+  new Boss("Chronos", 20, 180),
+  new Boss("Lilith", 30, 150),
+];
+
+
