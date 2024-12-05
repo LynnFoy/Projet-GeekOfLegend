@@ -217,3 +217,22 @@ function jouer() {
           }
       }
 
+//Tour du boss
+      const cibles = heros.filter(h => h.estEnVie());
+      const cible = cibles[Math.floor(Math.random() * cibles.length)];
+      cible.subirDegats(boss.attaque);
+
+//Vérification de l'état
+      console.log("\n--- État des héros ---");
+      for (const hero of heros) {
+          console.log(`${hero.nom}: ${hero.vie}/${hero.vieMax} PV`);
+      }
+      console.log(`${boss.nom}: ${boss.vie}/${boss.vieMax} PV`);
+
+//Changement de posture
+      for (const hero of heros) {
+          if (hero.estEnVie()) hero.changerPosture();
+      }
+  }
+
+
