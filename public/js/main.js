@@ -235,4 +235,11 @@ function jouer() {
       }
   }
 
+// Si les héros sont morts
+  console.log("Tous les héros sont morts. Vous avez perdu !");
+//Afficher un message de défaite
+  alert("Tous les héros sont morts. Vous avez perdu !");
+}
 
+// Lancer le jeu
+jouer();
