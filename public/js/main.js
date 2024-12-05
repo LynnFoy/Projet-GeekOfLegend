@@ -243,3 +243,4 @@ function jouer() {
 
 // Lancer le jeu
 jouer();
+
