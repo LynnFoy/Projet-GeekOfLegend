@@ -49,6 +49,7 @@ class Hero {
       this.vie = vie;
       this.vieMax = vie;
       this.posture = posture;
+      this.peutJouer = true;  
   }
 
   estEnVie() {
@@ -56,7 +57,10 @@ class Hero {
   }
 
   attaquer(boss) {
-      if (!this.estEnVie()) return 0;
+      if (!this.estEnVie() || this.posture === "défense" || !this.peutJouer) {
+//Le héros ne peut attaquer s'il est en posture de défense, mort ou s'il ne peut plus jouer
+          return 0;
+      }
 
       let degats = this.attaque;
       if (this.posture === "attaque") degats *= 1.2;
@@ -72,10 +76,18 @@ class Hero {
       const dommages = this.posture === "défense" ? dmg / 2 : dmg;
       this.vie -= dommages;
       console.log(`${this.nom} subit ${dommages.toFixed(2)} dégâts.`);
+
+      if (this.vie <= 0) {
+          this.peutJouer = false;  
+          console.log(`${this.nom} est mort et ne peut plus jouer.`);
+      }
+
       return dommages;
   }
 
   changerPosture() {
+      if (!this.peutJouer) return;  
+
       const nouvellePosture = prompt(`Posture pour ${this.nom} (attaque/défense) ?`).toLowerCase();
       if (nouvellePosture === "défense" || nouvellePosture === "attaque") {
           this.posture = nouvellePosture;
@@ -94,6 +106,8 @@ class Guerrier extends Hero {
   }
 
   attaquer(boss) {
+      if (this.posture === "défense" || !this.peutJouer) return 0;  
+
       let degats = super.attaquer(boss);
       this.rage++;
       if (this.rage >= 4) {
@@ -113,6 +127,8 @@ class Mage extends Hero {
   }
 
   attaquer(boss) {
+      if (this.posture === "défense" || !this.peutJouer) return 0;  
+
       if (this.mana < 2) {
           console.log(`${this.nom} récupère 7 points de mana.`);
           this.mana = 7;
@@ -131,6 +147,8 @@ class Archer extends Hero {
   }
 
   attaquer(boss) {
+      if (this.posture === "défense" || !this.peutJouer) return 0;  
+
       if (this.fleches < 2) {
           console.log(`${this.nom} récupère 6 flèches.`);
           this.fleches = 6;
@@ -195,16 +213,14 @@ function jouer() {
   console.log(`Le boss est ${boss.nom} avec ${boss.vie} points de vie !`);
 
   while (heros.some(h => h.estEnVie()) && boss.estEnVie()) {
-  //Tour des héros
+//Tour des héros
       for (const hero of heros) {
-          if (hero.estEnVie()) hero.attaquer(boss);
+          if (hero.estEnVie() && hero.peutJouer) hero.attaquer(boss);
       }
 
       if (boss.vie <= 0) {
           console.log(`Vous avez vaincu ${boss.nom} ! Félicitations !`);
-//Afficher un message de victoire
           alert(`Vous avez vaincu ${boss.nom} ! Félicitations !`);
-//Gagner de l'expérience
           heros.forEach(hero => console.log(`${hero.nom} a gagné 10 points d'expérience.`));
           return;
       }
@@ -214,9 +230,7 @@ function jouer() {
           console.log(`${boss.nom} est affaibli ! Il pose une énigme.`);
           const victoire = boss.poserEnigme();
           if (!victoire) {
-//Tous les héros meurent si l'énigme est ratée
               console.log("Tous les héros sont morts. Vous avez perdu !");
-//Afficher un message de défaite
               alert("Tous les héros sont morts. Vous avez perdu !");
               return;
           }
@@ -234,19 +248,17 @@ function jouer() {
       }
       console.log(`${boss.nom}: ${boss.vie}/${boss.vieMax} PV`);
 
+//Affichage dans une alerte des points de vie restants
+      alert(`État des héros : \n${heros.map(hero => `${hero.nom}: ${hero.vie} PV`).join("\n")}\n\n${boss.nom}: ${boss.vie} PV`);
+
 //Changement de posture
       for (const hero of heros) {
-          if (hero.estEnVie()) hero.changerPosture();
+          if (hero.estEnVie() && hero.peutJouer) hero.changerPosture();
       }
   }
 
-//Si les héros sont morts
-console.log("Tous les héros sont morts. Vous avez perdu !");
-
-//Afficher un message de défaite
+  console.log("Tous les héros sont morts. Vous avez perdu !");
   alert("Tous les héros sont morts. Vous avez perdu !");
 }
 
-//Lancer le jeu
 jouer();
-
