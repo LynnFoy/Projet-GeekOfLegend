@@ -79,6 +79,7 @@ class Hero {
 
       if (this.vie <= 0) {
           this.peutJouer = false;  
+          alert(`${this.nom} est mort et ne peut plus jouer.`);  
           console.log(`${this.nom} est mort et ne peut plus jouer.`);
       }
 
@@ -215,7 +216,9 @@ function jouer() {
   while (heros.some(h => h.estEnVie()) && boss.estEnVie()) {
 //Tour des héros
       for (const hero of heros) {
-          if (hero.estEnVie() && hero.peutJouer) hero.attaquer(boss);
+          if (hero.estEnVie() && hero.peutJouer) {
+              hero.attaquer(boss);
+          }
       }
 
       if (boss.vie <= 0) {
@@ -237,7 +240,7 @@ function jouer() {
       }
 
 //Tour du boss
-      const cibles = heros.filter(h => h.estEnVie());
+      const cibles = heros.filter(h => h.estEnVie() && h.peutJouer);
       const cible = cibles[Math.floor(Math.random() * cibles.length)];
       cible.subirDegats(boss.attaque);
 
@@ -253,7 +256,9 @@ function jouer() {
 
 //Changement de posture
       for (const hero of heros) {
-          if (hero.estEnVie() && hero.peutJouer) hero.changerPosture();
+          if (hero.estEnVie() && hero.peutJouer) {
+              hero.changerPosture();
+          }
       }
   }
 
