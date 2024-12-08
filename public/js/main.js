@@ -320,4 +320,3 @@ function jouer() {
 
 //Démarrer le jeu
 jouer();
-
